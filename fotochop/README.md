@@ -1,16 +1,30 @@
-# fotochop
+# Fotochop
 
-A new Flutter project.
 
-## Getting Started
+##### A completely Responsive Image Editor App- Works on Android & iOS!
 
-This project is a starting point for a Flutter application.
+## Features
+- Pick Image
+- Add Text
+- Bold Text
+- Italic Text
+- Add New Line
+- Align Text Left, Right & Center
+- Change Colour
+- Change Font
+- Increase Font Size
+- Decrease Font Size
 
-A few resources to get you started if this is your first Flutter project:
+### Stage : Alpha 1.0.0
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Screenshots
+- img: SCREENSHOTS\Screenshot_Front Page.png
+- img:SCREENSHOTS\Screenshot_colorPicker.png
+- img:SCREENSHOTS\Screenshot_Add Text.png
+- img:SCREENSHOTS\Screenshot_colorPicker.png
+- img:SCREENSHOTS\Screenshot_Fontchooser.png
+- 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Feedback
+
+If you have any feedback, please reach out to me at [Gmail](dgr8som@gmail.com)

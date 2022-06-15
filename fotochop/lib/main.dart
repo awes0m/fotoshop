@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fotochop/screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +12,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Demo'),
-        ),
-      ),
+      home: const HomeScreen(),
+      routes: {
+        HomeScreen.routeName: (context) => const HomeScreen(),
+      },
     );
   }
 }
