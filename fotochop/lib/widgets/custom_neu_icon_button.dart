@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+///Return a Seamless Neomorphic IconButton, use backgroundColor same as app background color
 class CustomNeuIconButton extends StatelessWidget {
   final IconData icon;
   final Color iconColor;

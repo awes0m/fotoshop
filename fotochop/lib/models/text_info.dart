@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+///[TextInfo] is used to store all required text information under one object
+///eg. text, fontSize, fontColor, fontFamily, left, top
 class TextInfo {
   String text;
   double left;
@@ -12,7 +14,6 @@ class TextInfo {
   double fontSize;
   TextAlign textAlign;
   String fontFamily;
-
 
   TextInfo({
     required this.text,

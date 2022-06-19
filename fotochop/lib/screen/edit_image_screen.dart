@@ -1,18 +1,18 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fotochop/models/edit_image_viewmodel.dart';
 import 'package:fotochop/utils/colors.dart';
 import 'package:fotochop/utils/text_styles.dart';
 import 'package:fotochop/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../widgets/image_text.dart';
 
 class EditImageScreen extends StatefulWidget {
   static const routeName = '/edit_image';
-  final String selectedImage;
+  final XFile selectedImage;
   const EditImageScreen({Key? key, required this.selectedImage})
       : super(key: key);
 
@@ -24,6 +24,8 @@ class _EditImageScreenState extends EditImageViewModel {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: buildDrawer(),
+      endDrawer: buildEndDrawer(),
       appBar: _appBar,
       floatingActionButton: _addnewTextFab,
       body: Screenshot(
@@ -38,10 +40,8 @@ class _EditImageScreenState extends EditImageViewModel {
                   left: texts[i].left,
                   top: texts[i].top,
                   child: GestureDetector(
-                    onLongPress: () {
-                      //TODO: Add a dialog to delete the text
-                      print("TODO: Add a dialog to delete the text");
-                    },
+                    // onDoubleTap: editDialog(context, texts[i].text),
+                    onLongPress: () => removeText(context),
                     onTap: () => setCurrentIndex(context, i),
                     child: Draggable(
                       feedback: ImageText(textInfo: texts[i]),
@@ -98,7 +98,7 @@ class _EditImageScreenState extends EditImageViewModel {
   Widget get _selectedImage => Center(
         child: Image.file(
             File(
-              widget.selectedImage,
+              widget.selectedImage.path,
             ),
             fit: BoxFit.contain,
             width: ScrnSizer.screenWidth() * 0.9),
@@ -126,104 +126,161 @@ class _EditImageScreenState extends EditImageViewModel {
       elevation: 0,
       title: SizedBox(
         height: 50,
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: [
-            //save to gallery button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.save),
-              color: iconColor,
-              onPressed: () => saveToGallery(context),
-              tooltip: 'Save To Gallery',
-            ),
-            //Increse font size button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.add),
-              color: iconColor,
-              onPressed: increaseFontSize,
-              tooltip: 'Increase Font Size',
-            ),
-            //Decrease font size button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.remove),
-              color: iconColor,
-              onPressed: decreaseFontSize,
-              tooltip: 'Decrease Font Size',
-            ),
-            // Align Left button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.format_align_left),
-              color: iconColor,
-              onPressed: alignLeft,
-              tooltip: 'Align Left',
-            ),
-            // Align Center button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.format_align_center),
-              color: iconColor,
-              onPressed: alignCenter,
-              tooltip: 'Align Center',
-            ),
-            // Align Right button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.format_align_right),
-              color: iconColor,
-              onPressed: alignRight,
-              tooltip: 'Align Right',
-            ),
-            // Text Bold button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.format_bold),
-              color: iconColor,
-              onPressed: boldText,
-              tooltip: 'Bold',
-            ),
-            // Text Italic button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.format_italic),
-              color: iconColor,
-              onPressed: italicText,
-              tooltip: 'Italic',
-            ),
-            // Columize/Vertical Text button
-            IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.align_horizontal_center),
-              color: iconColor,
-              onPressed: columnizeText,
-              tooltip: 'Columnize text',
-            ),
-            // Color Picker button
-            Tooltip(
-              message: 'Pick a color',
-              child: IconButton(
-                iconSize: 30,
-                icon: const Icon(Icons.circle),
-                color: pickerColor,
-                onPressed: buildColorPicker,
-                tooltip: 'Pick a color',
-              ),
-            ),
-            Tooltip(
-              message: 'Choose Font',
-              child: TextButton(
-                onPressed: buildFontPicker,
-                child: Text(
-                  'Font',
-                  style: selectedFontTextStyle,
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: Text('FotoChop', style: AppTextStyle.mediumBold()),
       ));
+
+  Widget buildEndDrawer() {
+    return Drawer(
+      backgroundColor: backgroundColor,
+      width: 50,
+      child: ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+            ),
+            child: Text(''),
+          ),
+
+          //save to gallery button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.save),
+            color: iconColor,
+            onPressed: () => saveToGallery(context),
+            tooltip: 'Save To Gallery',
+          ),
+          const Divider(
+            thickness: 2,
+            color: Colors.white,
+          ),
+          //Increse font size button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.add),
+            color: iconColor,
+            onPressed: increaseFontSize,
+            tooltip: 'Increase Font Size',
+          ),
+          //Decrease font size button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.remove),
+            color: iconColor,
+            onPressed: decreaseFontSize,
+            tooltip: 'Decrease Font Size',
+          ),
+          // Align Left button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.format_align_left),
+            color: iconColor,
+            onPressed: alignLeft,
+            tooltip: 'Align Left',
+          ),
+          // Align Center button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.format_align_center),
+            color: iconColor,
+            onPressed: alignCenter,
+            tooltip: 'Align Center',
+          ),
+          // Align Right button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.format_align_right),
+            color: iconColor,
+            onPressed: alignRight,
+            tooltip: 'Align Right',
+          ),
+          // Text Bold button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.format_bold),
+            color: iconColor,
+            onPressed: boldText,
+            tooltip: 'Bold',
+          ),
+          // Text Italic button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.format_italic),
+            color: iconColor,
+            onPressed: italicText,
+            tooltip: 'Italic',
+          ),
+          // Columize/Vertical Text button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.align_horizontal_center),
+            color: iconColor,
+            onPressed: columnizeText,
+            tooltip: 'Columnize text',
+          ),
+          // Color Picker button
+          Tooltip(
+            message: 'Pick a color',
+            child: IconButton(
+              iconSize: 30,
+              icon: const Icon(Icons.circle),
+              color: pickerColor,
+              onPressed: buildColorPicker,
+              tooltip: 'Pick a color',
+            ),
+          ),
+          Tooltip(
+            message: 'Choose Font',
+            child: TextButton(
+              onPressed: buildFontPicker,
+              child: Text(
+                'Font',
+                style: selectedFontTextStyle,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDrawer() {
+    return Drawer(
+      backgroundColor: backgroundColor,
+      width: 50,
+      child: ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+            ),
+            child: Text(''),
+          ),
+          //save to gallery button
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.save),
+            color: iconColor,
+            onPressed: () => saveToGallery(context),
+            tooltip: 'Save To Gallery',
+          ),
+          const Divider(
+            thickness: 2,
+            color: Colors.white,
+          ),
+          IconButton(
+            iconSize: 25,
+            icon: const Icon(Icons.crop),
+            color: iconColor,
+            onPressed: increaseFontSize,
+            tooltip: 'Corp Image',
+          ),
+        ],
+      ),
+    );
+  }
 }

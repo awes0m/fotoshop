@@ -75,6 +75,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   List<TextInfo> texts = [];
   int currentIndex = 0;
 
+  /// Save the image from memory to the gallery
   saveToGallery(BuildContext context) {
     if (texts.isNotEmpty) {
       screenshotController.capture().then((Uint8List? image) {
@@ -86,6 +87,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     }
   }
 
+  /// Takes image Screenshot and saves it to memory
   saveImage(Uint8List bytes) async {
     final time = DateTime.now()
         .toIso8601String()
@@ -96,6 +98,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     await ImageGallerySaver.saveImage(bytes, name: name);
   }
 
+  /// deletes the text from the list
   removeText(context) {
     setState(() {
       texts.removeAt(currentIndex);
@@ -103,6 +106,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     showSnackBar(context, 'Text removed');
   }
 
+  /// Applies the color changes to the text
   void changeColor(Color color) {
     setState(() {
       pickerColor = color;
@@ -110,6 +114,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     });
   }
 
+  /// builds a Material color Picker
   void buildColorPicker() {
     showDialog(
         context: context,
@@ -133,6 +138,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
             )));
   }
 
+  /// Builds a  Google fonts picker
   void buildFontPicker() {
     showDialog(
         context: context,
@@ -219,6 +225,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
         ]);
   }
 
+  /// Finds the current index of the selected text in the list
   setCurrentIndex(BuildContext context, int index) {
     setState(() {
       currentIndex = index;
@@ -226,48 +233,56 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     showSnackBar(context, 'Selected for styling');
   }
 
+  /// Changes the text color in the list [texts]
   changeTextColor(Color color) {
     setState(() {
       texts[currentIndex].color = color;
     });
   }
 
+  /// Changes the text font in the list [texts]
   changeTextFont(String font) {
     setState(() {
       texts[currentIndex].fontFamily = font;
     });
   }
 
+  /// Changes the text font size in the list [texts]
   increaseFontSize() {
     setState(() {
       texts[currentIndex].fontSize += 2;
     });
   }
 
+  /// Changes the text font size in the list [texts]
   decreaseFontSize() {
     setState(() {
       texts[currentIndex].fontSize -= 2;
     });
   }
 
+  /// Changes to [Alingment.Left]in the list [texts]
   alignLeft() {
     setState(() {
       texts[currentIndex].textAlign = TextAlign.left;
     });
   }
 
+  /// Changes to [Alingment.Right]in the list [texts]
   alignRight() {
     setState(() {
       texts[currentIndex].textAlign = TextAlign.right;
     });
   }
 
+  /// Changes to [Alingment.Center]in the list [texts]
   alignCenter() {
     setState(() {
       texts[currentIndex].textAlign = TextAlign.center;
     });
   }
 
+  /// Toggles between [FontWeight.bold] and [FontWeight.normal] in the list [texts]
   boldText() {
     if (texts[currentIndex].fontWeight == FontWeight.bold) {
       setState(() {
@@ -280,6 +295,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     }
   }
 
+  /// Toggles between [FontStyle.italic] and [FontStyle.normal] in the list [texts]
   italicText() {
     if (texts[currentIndex].fontStyle == FontStyle.italic) {
       setState(() {
@@ -292,6 +308,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     }
   }
 
+  /// Changes all spaces to nextline
   columnizeText() {
     setState(() {
       if (texts[currentIndex].text.contains('\n')) {
@@ -304,12 +321,13 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     });
   }
 
+  /// Adds a new text to the list [texts]
   addNewText(BuildContext context) {
     setState(() {
       texts.add(TextInfo(
         text: textEditingController.text,
-        left: 0,
-        top: 0,
+        left: 50,
+        top: 50,
         color: Colors.white,
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
@@ -320,7 +338,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
       Navigator.of(context).pop();
     });
   }
-
+  /// builds a [showDialog] to add a new text
   addNewDialog(context) {
     showDialog(
       context: context,
@@ -349,4 +367,39 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
       ),
     );
   }
+
+  // editText(BuildContext context) {
+  //   setState(() {
+  //     texts[currentIndex].text = textEditingController.text;
+  //   });
+  //   Navigator.of(context).pop();
+  // }
+
+  // editDialog(BuildContext context, String oldText) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Add new text'),
+  //       content: TextFormField(
+  //         initialValue: oldText,
+  //         controller: textEditingController,
+  //         maxLines: 5,
+  //         decoration: const InputDecoration(
+  //           border: OutlineInputBorder(),
+  //           // labelText: 'Your text here',
+  //         ),
+  //       ),
+  //       actions: <Widget>[
+  //         TextButton(
+  //           child: const Text('Back'),
+  //           onPressed: () => Navigator.of(context).pop(),
+  //         ),
+  //         TextButton(
+  //           onPressed: () => editText(context),
+  //           child: const Text('Edit'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
