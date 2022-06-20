@@ -326,8 +326,8 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     setState(() {
       texts.add(TextInfo(
         text: textEditingController.text,
-        left: 50,
-        top: 50,
+        left: ScrnSizer.screenWidth() / 2,
+        top: ScrnSizer.screenHeight() / 2,
         color: Colors.white,
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
@@ -338,6 +338,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
       Navigator.of(context).pop();
     });
   }
+
   /// builds a [showDialog] to add a new text
   addNewDialog(context) {
     showDialog(
