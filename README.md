@@ -50,6 +50,9 @@
 - Add Image filters (Next release)
 - Add Video filters
 - Add Text on videos
+
+
 ## Feedback
+### Please fill in the survey form [here](https://docs.google.com/forms/d/e/1FAIpQLSeh4_VCCAh7VYKwHc170bFPMgSN7UMmDOIXBL_NXRLPKqcgyg/viewform?usp=sf_link)
 
 If you have any feedback, please reach out to me at [Gmail](dgr8som@gmail.com)
