@@ -1,6 +1,6 @@
 # Fotochop
 
-![logo](assets\icon\FotoChop.png)
+![logo](https://github.com/awes0m/fotoshop/blob/main/fotochop/assets/icon/FotoChop.png)
 
 ##### A completely Responsive Image Editor App- Works on Android & iOS!
 
@@ -37,11 +37,11 @@
 
 
 # Screenshots
-- ![img](SCREENSHOTS\Screenshot_Front_Page.png)
-- ![img](SCREENSHOTS\Screenshot_colorPicker.png)
-- ![img](SCREENSHOTS\Screenshot_editScreen.png)
-- ![img](SCREENSHOTS\Screenshot_colorPicker.png)
-- ![img](SCREENSHOTS\Screenshot_Fontchooser.png)
+- ![img](https://github.com/awes0m/fotoshop/blob/main/fotochop/SCREENSHOTS/Screenshot_Front_Page.png)
+- ![img](https://github.com/awes0m/fotoshop/blob/main/fotochop/SCREENSHOTS/Screenshot_Add%20Text.png)
+- ![img](https://github.com/awes0m/fotoshop/blob/main/fotochop/SCREENSHOTS/Screenshot_editScreen.png)
+- ![img](https://github.com/awes0m/fotoshop/blob/main/fotochop/SCREENSHOTS/Screenshot_colorPicker.png)
+- ![img](https://github.com/awes0m/fotoshop/blob/main/fotochop/SCREENSHOTS/Screenshot_Fontchooser.png)
   
   
 
