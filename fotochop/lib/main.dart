@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fotochop/screen/home_screen.dart';
+import 'package:fotochop/exp/photoexperiment.dart';
+
+import 'home_screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         HomeScreen.routeName: (context) => const HomeScreen(),
+        CommonUseCasesExamples.routeName: (context) =>
+            const CommonUseCasesExamples(),
       },
     );
   }
