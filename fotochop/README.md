@@ -33,6 +33,9 @@
 ## Download
 
 
+Click [here](Installable_file\Fotochop-1.0.1-beta.apk) to download for Android
+
+
 
 
 

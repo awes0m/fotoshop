@@ -6,6 +6,7 @@ import 'package:fotochop/utils/colors.dart';
 import 'package:fotochop/utils/text_styles.dart';
 import 'package:fotochop/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../widgets/image_text.dart';
@@ -96,14 +97,13 @@ class _EditImageScreenState extends EditImageViewModel {
 // Widgets // //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   Widget get _selectedImage => Center(
-        child: Image.file(
-            File(
-              widget.selectedImage.path,
-            ),
-            fit: BoxFit.contain,
-            width: ScrnSizer.screenWidth() * 0.9),
-      );
-
+      child: kIsWeb
+          ? PhotoView(
+              imageProvider: NetworkImage(widget.selectedImage.path),
+            )
+          : PhotoView(
+              imageProvider: FileImage(File(widget.selectedImage.path)),
+            ));
   Widget get _addnewTextFab => FloatingActionButton(
         elevation: 70,
         shape: ShapeBorder.lerp(

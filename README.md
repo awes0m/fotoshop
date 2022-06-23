@@ -29,10 +29,10 @@
 - Export Video
 - Export cover Image
 
-### Version : 1.0.2-beta
+### Version : 1.0.1-beta
 ## Download
 
-
+Click [here](fotochop\Installable_file\Fotochop-1.0.1-beta.apk) to download for Android
 
 
 
