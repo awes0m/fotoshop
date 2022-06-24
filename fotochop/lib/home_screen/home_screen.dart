@@ -27,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: buildDrawer(),
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: const [
             Icon(Icons.photo_camera),
             SizedBox(width: 15),

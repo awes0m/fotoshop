@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:fotochop/features/image_edit/domain/edit_image_viewmodel.dart';
-import 'package:fotochop/features/image_edit/presentation/widgets/selected_image_widget.dart';
+import 'package:fotochop/features/image_edit/presentation/widgets/image_canvas_widget.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
@@ -22,20 +21,25 @@ class EditImageScreen extends StatefulWidget {
 }
 
 class _EditImageScreenState extends EditImageViewModel {
+  late double canvasHeight = ScrnSizer.screenHeight() * 0.8;
+  late double canvasWidth = ScrnSizer.screenWidth() * 0.8;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: buildDrawer(),
-      endDrawer: buildEndDrawer(),
+      endDrawer: isTextEditing ? textEditingEndDrawer() : null,
       appBar: _appBar,
       floatingActionButton: _addnewTextFab,
-      body: Screenshot(
-        controller: screenshotController,
-        child: SafeArea(
-          child: SizedBox(
-            height: ScrnSizer.screenHeight() * 0.9,
-            child: Stack(children: [
-               SelectedImageWidget(imagePath: widget.selectedImage.path,),
+      body: SafeArea(
+        child: SizedBox(
+          child: Screenshot(
+            controller: screenshotController,
+            child: Stack(fit: StackFit.passthrough, children: [
+              ImageCanvasWidget(
+                imagePath: widget.selectedImage.path,
+                maxHeight: canvasHeight,
+                maxWidth: canvasWidth,
+              ),
               for (int i = 0; i < texts.length; i++)
                 Positioned(
                   left: texts[i].left,
@@ -69,24 +73,6 @@ class _EditImageScreenState extends EditImageViewModel {
                       ),
                     )
                   : const SizedBox.shrink(),
-              creatorText.text.isNotEmpty
-                  ? Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: DragTarget(
-                          builder: (context, candidateData, rejectedData) {
-                        removeText(context);
-                        return Container(
-                            decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                              colors: [Colors.transparent, Colors.black],
-                            )),
-                            width: double.infinity,
-                            height: 300,
-                            child: const Text('Delete'));
-                      }),
-                    )
-                  : const SizedBox.shrink(),
             ]),
           ),
         ),
@@ -113,14 +99,27 @@ class _EditImageScreenState extends EditImageViewModel {
       );
 
   AppBar get _appBar => AppBar(
-      backgroundColor: backgroundColor,
-      elevation: 0,
-      title: SizedBox(
-        height: 50,
-        child: Text('FotoChop', style: AppTextStyle.mediumBold()),
-      ));
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: backgroundColor),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.photo_camera),
+            const SizedBox(width: 15),
+            Text(
+              'FotoChop',
+              style: AppTextStyle.mediumNormal(color: backgroundColor),
+            ),
+            const SizedBox(width: 10),
+            const Icon(Icons.play_circle)
+          ],
+        ),
+      );
 
-  Widget buildEndDrawer() {
+  Widget textEditingEndDrawer() {
     return Drawer(
       backgroundColor: backgroundColor,
       width: 50,
@@ -135,14 +134,6 @@ class _EditImageScreenState extends EditImageViewModel {
             child: Text(''),
           ),
 
-          //save to gallery button
-          IconButton(
-            iconSize: 25,
-            icon: const Icon(Icons.save),
-            color: iconColor,
-            onPressed: () => saveToGallery(context),
-            tooltip: 'Save To Gallery',
-          ),
           const Divider(
             thickness: 2,
             color: Colors.white,
@@ -259,15 +250,12 @@ class _EditImageScreenState extends EditImageViewModel {
             onPressed: () => saveToGallery(context),
             tooltip: 'Save To Gallery',
           ),
-          const Divider(
-            thickness: 2,
-            color: Colors.white,
-          ),
+          const Divider(thickness: 2, color: Colors.white),
           IconButton(
             iconSize: 25,
             icon: const Icon(Icons.crop),
             color: iconColor,
-            onPressed: increaseFontSize,
+            onPressed: () => buildAspectRatioSelector,
             tooltip: 'Corp Image',
           ),
         ],
@@ -275,4 +263,3 @@ class _EditImageScreenState extends EditImageViewModel {
     );
   }
 }
-

@@ -12,6 +12,7 @@ import '../presentation/pages/edit_image_screen.dart';
 import '../data/models/text_info.dart';
 
 abstract class EditImageViewModel extends State<EditImageScreen> {
+  bool isTextEditing = false;
   TextEditingController textEditingController = TextEditingController();
   TextEditingController creatorText = TextEditingController();
   ScreenshotController screenshotController = ScreenshotController();
@@ -77,14 +78,12 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
 
   /// Save the image from memory to the gallery
   saveToGallery(BuildContext context) {
-    if (texts.isNotEmpty) {
-      screenshotController.capture().then((Uint8List? image) {
-        saveImage(image!);
-        showSnackBar(context, "Image saved to gallery");
-      }).catchError((e) {
-        showSnackBar(context, e.toString());
-      });
-    }
+    screenshotController.capture().then((Uint8List? image) {
+      saveImage(image!);
+      showSnackBar(context, "Image saved to gallery");
+    }).catchError((e) {
+      showSnackBar(context, e.toString());
+    });
   }
 
   /// Takes image Screenshot and saves it to memory
@@ -102,6 +101,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   removeText(context) {
     setState(() {
       texts.removeAt(currentIndex);
+      isTextEditing = false;
     });
     showSnackBar(context, 'Text removed');
   }
@@ -228,9 +228,10 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   /// Finds the current index of the selected text in the list
   setCurrentIndex(BuildContext context, int index) {
     setState(() {
+      isTextEditing = true;
       currentIndex = index;
     });
-    showSnackBar(context, 'Selected for styling');
+    showSnackBar(context, 'Selected for styling!    --- Long press to remove');
   }
 
   /// Changes the text color in the list [texts]
@@ -324,6 +325,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   /// Adds a new text to the list [texts]
   addNewText(BuildContext context) {
     setState(() {
+      isTextEditing = true;
       texts.add(TextInfo(
         text: textEditingController.text,
         left: ScrnSizer.screenWidth() / 2,
@@ -369,6 +371,21 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     );
   }
 
+  buildAspectRatioSelector(context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.aspect_ratio),
+            title: const Text('Aspect Ratio'),
+            subtitle: const Text('Select the aspect ratio'),
+          ),
+        ],
+      ),
+    );
+  }
   // editText(BuildContext context) {
   //   setState(() {
   //     texts[currentIndex].text = textEditingController.text;
